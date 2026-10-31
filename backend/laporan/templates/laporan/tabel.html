@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<style>
+  @page { size: A4 landscape; margin: 12mm; @bottom-right { content: "Halaman " counter(page) " dari " counter(pages); font-size: 8pt; color: #555; } }
+  body { font-family: sans-serif; font-size: 9pt; color: #111; }
+  h1 { font-size: 14pt; margin: 0; color: #0B5CAD; }
+  .kecil { font-size: 8pt; color: #555; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10pt; }
+  th { text-align: left; border-bottom: 1px solid #999; padding: 4pt; background: #F2F6FA; }
+  td { padding: 4pt; border-bottom: 1px solid #eee; }
+  .angka { text-align: right; }
+  thead { display: table-header-group; }
+</style>
+</head>
+<body>
+  <h1>{{ judul }}</h1>
+  <div class="kecil">{{ perusahaan }}{% if periode %} · {{ periode }}{% endif %} · dicetak {{ dicetak|date:"d/m/Y H:i" }}</div>
+  <table>
+    <thead><tr>{% for k in kepala %}<th{% if k.angka %} class="angka"{% endif %}>{{ k.label }}</th>{% endfor %}</tr></thead>
+    <tbody>
+      {% for b in baris %}
+      <tr>{% for s in b %}<td{% if s.angka %} class="angka"{% endif %}>{{ s.teks }}</td>{% endfor %}</tr>
+      {% empty %}
+      <tr><td colspan="{{ kepala|length }}">Tidak ada data.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

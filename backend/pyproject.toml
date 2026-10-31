@@ -1,0 +1,23 @@
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+extend-exclude = ["*/migrations/*", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S", "DJ"]
+ignore = ["S101", "DJ001", "DJ008"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S105", "S106", "S107"]
+"akun/management/commands/isi_demo.py" = ["S105", "S106"]
+
+[tool.mypy]
+python_version = "3.13"
+plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
+ignore_missing_imports = true
+exclude = ["migrations/", ".venv/", "tests/"]
+# Kolom hasil annotate() dan objek openpyxl tidak terbaca oleh stub.
+disable_error_code = ["attr-defined", "union-attr"]
+
+[tool.django-stubs]
+django_settings_module = "config.settings"

@@ -1,0 +1,8 @@
+**/node_modules
+**/.next
+frontend/out
+backend/.venv
+**/__pycache__
+.git
+.env
+deploy/certs

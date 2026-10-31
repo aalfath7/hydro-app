@@ -1,0 +1,67 @@
+# Produksi. Isi .env dari .env.example, lalu ikuti README.
+services:
+  web:
+    image: ghcr.io/${GHCR_OWNER:?}/hydro-web:${APP_VERSION:?}
+    restart: unless-stopped
+    ports:
+      # Diikat ke IP Tailscale, karena port Docker bisa melewati aturan UFW.
+      - "${TAILSCALE_IP:?}:443:8443"
+    volumes:
+      - ${CERT_DIR:-./deploy/certs}:/etc/nginx/certs:ro
+    networks: [edge, app]
+    depends_on:
+      api:
+        condition: service_healthy
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+
+  api:
+    image: ghcr.io/${GHCR_OWNER:?}/hydro-api:${APP_VERSION:?}
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
+    volumes:
+      - media:/data/media
+    networks: [app, data]
+    depends_on:
+      db:
+        condition: service_healthy
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+
+  db:
+    image: postgres:18.1
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?}
+      POSTGRES_USER: ${POSTGRES_USER:?}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
+    volumes:
+      - pgdata:/var/lib/postgresql
+    networks: [data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+networks:
+  edge: {}
+  app:
+    internal: true
+  data:
+    internal: true
+
+volumes:
+  pgdata:
+  media:

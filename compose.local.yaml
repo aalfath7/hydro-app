@@ -1,0 +1,12 @@
+# Uji image seperti produksi, dengan HTTPS, di komputer lokal:
+# docker compose -p hydro-lokal --env-file .env.local -f compose.prod.yaml -f compose.local.yaml up -d --build
+services:
+  web:
+    build:
+      context: .
+      dockerfile: deploy/web.Dockerfile
+    ports: !override
+      - "127.0.0.1:8443:8443"
+  api:
+    build: ./backend
+    env_file: !override .env.local

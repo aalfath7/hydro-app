@@ -1,0 +1,14 @@
+.env
+.env.local
+deploy/certs/
+backend/.venv/
+backend/media/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/next-env.d.ts

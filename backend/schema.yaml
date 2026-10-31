@@ -1,0 +1,3402 @@
+openapi: 3.0.3
+info:
+  title: Hydro API
+  version: 1.0.0
+paths:
+  /api/auth/sesi/:
+    get:
+      operationId: auth_sesi_retrieve
+      description: 'Bagian dari alur login: memberi cookie CSRF dan status sesi saat
+        ini.'
+      tags:
+      - auth
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sesi'
+          description: ''
+  /api/barang-masuk/:
+    get:
+      operationId: barang_masuk_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: ukuran
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - barang-masuk
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBarangMasukList'
+          description: ''
+    post:
+      operationId: barang_masuk_create
+      tags:
+      - barang-masuk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BarangMasukBuatRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BarangMasukBuatRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BarangMasuk'
+          description: ''
+  /api/batch/:
+    get:
+      operationId: batch_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: ukuran
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - batch
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBatchList'
+          description: ''
+  /api/batch/{id}/:
+    get:
+      operationId: batch_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this batch produk.
+        required: true
+      tags:
+      - batch
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Batch'
+          description: ''
+  /api/batch/{id}/kurangi/:
+    post:
+      operationId: batch_kurangi_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this batch produk.
+        required: true
+      tags:
+      - batch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KurangiStokRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/KurangiStokRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Batch'
+          description: ''
+  /api/dasbor/:
+    get:
+      operationId: dasbor_retrieve
+      description: 'Isi mengikuti izin: angka keuangan hanya untuk peran yang boleh
+        melihat laporan.'
+      tags:
+      - dasbor
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dasbor'
+          description: ''
+  /api/harga/:
+    get:
+      operationId: harga_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: ukuran
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - harga
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedHargaList'
+          description: ''
+    post:
+      operationId: harga_create
+      tags:
+      - harga
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HargaRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/HargaRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Harga'
+          description: ''
+  /api/kategori/:
+    get:
+      operationId: kategori_list
+      tags:
+      - kategori
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Kategori'
+          description: ''
+    post:
+      operationId: kategori_create
+      tags:
+      - kategori
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KategoriRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/KategoriRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Kategori'
+          description: ''
+  /api/kategori/{id}/:
+    patch:
+      operationId: kategori_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this kategori.
+        required: true
+      tags:
+      - kategori
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedKategoriRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedKategoriRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Kategori'
+          description: ''
+  /api/laporan/penjualan/:
+    get:
+      operationId: laporan_penjualan_list
+      parameters:
+      - in: query
+        name: dari
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: ekspor
+        schema:
+          type: string
+          enum:
+          - pdf
+          - xlsx
+      - in: query
+        name: per
+        schema:
+          type: string
+          enum:
+          - bulan
+          - hari
+      - in: query
+        name: sampai
+        schema:
+          type: string
+          format: date
+      tags:
+      - laporan
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BarisPenjualan'
+          description: ''
+  /api/laporan/piutang/:
+    get:
+      operationId: laporan_piutang_list
+      parameters:
+      - in: query
+        name: ekspor
+        schema:
+          type: string
+          enum:
+          - pdf
+          - xlsx
+      tags:
+      - laporan
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BarisPiutang'
+          description: ''
+  /api/laporan/produk-terlaris/:
+    get:
+      operationId: laporan_produk_terlaris_list
+      parameters:
+      - in: query
+        name: dari
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: ekspor
+        schema:
+          type: string
+          enum:
+          - pdf
+          - xlsx
+      - in: query
+        name: sampai
+        schema:
+          type: string
+          format: date
+      tags:
+      - laporan
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BarisTerlaris'
+          description: ''
+  /api/laporan/stok/:
+    get:
+      operationId: laporan_stok_list
+      parameters:
+      - in: query
+        name: ekspor
+        schema:
+          type: string
+          enum:
+          - pdf
+          - xlsx
+      tags:
+      - laporan
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BarisStok'
+          description: ''
+  /api/log-aktivitas/:
+    get:
+      operationId: log_aktivitas_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: ukuran
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - log-aktivitas
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLogAktivitasList'
+          description: ''
+  /api/mutasi/:
+    get:
+      operationId: mutasi_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: ukuran
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - mutasi
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMutasiList'
+          description: ''
+  /api/opname/:
+    get:
+      operationId: opname_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: ukuran
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - opname
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOpnameList'
+          description: ''
+    post:
+      operationId: opname_create
+      tags:
+      - opname
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpnameBuatRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OpnameBuatRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Opname'
+          description: ''
+  /api/opname/{id}/:
+    get:
+      operationId: opname_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this stok opname.
+        required: true
+      tags:
+      - opname
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Opname'
+          description: ''
+  /api/opname/{id}/setujui/:
+    post:
+      operationId: opname_setujui_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this stok opname.
+        required: true
+      tags:
+      - opname
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Opname'
+          description: ''
+  /api/opname/{id}/tolak/:
+    post:
+      operationId: opname_tolak_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this stok opname.
+        required: true
+      tags:
+      - opname
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Opname'
+          description: ''
+  /api/pelanggan/:
+    get:
+      operationId: pelanggan_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: ukuran
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - pelanggan
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPelangganList'
+          description: ''
+    post:
+      operationId: pelanggan_create
+      tags:
+      - pelanggan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PelangganRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PelangganRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pelanggan'
+          description: ''
+  /api/pelanggan/{id}/:
+    get:
+      operationId: pelanggan_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this pelanggan.
+        required: true
+      tags:
+      - pelanggan
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pelanggan'
+          description: ''
+    patch:
+      operationId: pelanggan_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this pelanggan.
+        required: true
+      tags:
+      - pelanggan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPelangganRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPelangganRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pelanggan'
+          description: ''
+  /api/pengguna/:
+    get:
+      operationId: pengguna_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: ukuran
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - pengguna
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPenggunaList'
+          description: ''
+    post:
+      operationId: pengguna_create
+      tags:
+      - pengguna
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PenggunaBuatRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PenggunaBuatRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PenggunaBuat'
+          description: ''
+  /api/pengguna/{id}/:
+    get:
+      operationId: pengguna_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this pengguna.
+        required: true
+      tags:
+      - pengguna
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pengguna'
+          description: ''
+    patch:
+      operationId: pengguna_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this pengguna.
+        required: true
+      tags:
+      - pengguna
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPenggunaRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPenggunaRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pengguna'
+          description: ''
+  /api/pengguna/{id}/atur-password/:
+    post:
+      operationId: pengguna_atur_password_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this pengguna.
+        required: true
+      tags:
+      - pengguna
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AturPasswordRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AturPasswordRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/pengguna/{id}/reset-2fa/:
+    post:
+      operationId: pengguna_reset_2fa_create
+      description: Untuk pengguna yang kehilangan perangkat autentikatornya.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this pengguna.
+        required: true
+      tags:
+      - pengguna
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/peran/:
+    get:
+      operationId: peran_list
+      tags:
+      - peran
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Peran'
+          description: ''
+  /api/produk/:
+    get:
+      operationId: produk_list
+      description: 'Tidak ada hapus: produk lama dinonaktifkan supaya riwayat transaksi
+        tetap utuh.'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: ukuran
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - produk
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProdukList'
+          description: ''
+    post:
+      operationId: produk_create
+      description: 'Tidak ada hapus: produk lama dinonaktifkan supaya riwayat transaksi
+        tetap utuh.'
+      tags:
+      - produk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProdukBuatRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProdukBuatRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProdukBuat'
+          description: ''
+  /api/produk/{id}/:
+    get:
+      operationId: produk_retrieve
+      description: 'Tidak ada hapus: produk lama dinonaktifkan supaya riwayat transaksi
+        tetap utuh.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this produk.
+        required: true
+      tags:
+      - produk
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Produk'
+          description: ''
+    patch:
+      operationId: produk_partial_update
+      description: 'Tidak ada hapus: produk lama dinonaktifkan supaya riwayat transaksi
+        tetap utuh.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this produk.
+        required: true
+      tags:
+      - produk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProdukUbahRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProdukUbahRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProdukUbah'
+          description: ''
+  /api/produk/{id}/foto/:
+    get:
+      operationId: produk_foto_retrieve
+      description: 'Tidak ada hapus: produk lama dinonaktifkan supaya riwayat transaksi
+        tetap utuh.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this produk.
+        required: true
+      tags:
+      - produk
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+          description: ''
+    post:
+      operationId: produk_foto_create
+      description: 'Tidak ada hapus: produk lama dinonaktifkan supaya riwayat transaksi
+        tetap utuh.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this produk.
+        required: true
+      tags:
+      - produk
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FotoRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/produk/impor/:
+    post:
+      operationId: produk_impor_create
+      description: 'Tidak ada hapus: produk lama dinonaktifkan supaya riwayat transaksi
+        tetap utuh.'
+      tags:
+      - produk
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BerkasRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HasilImpor'
+          description: ''
+  /api/produk/template-impor/:
+    get:
+      operationId: produk_template_impor_retrieve
+      description: 'Tidak ada hapus: produk lama dinonaktifkan supaya riwayat transaksi
+        tetap utuh.'
+      tags:
+      - produk
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+          description: ''
+  /api/retur/:
+    get:
+      operationId: retur_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: ukuran
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - retur
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedReturList'
+          description: ''
+    post:
+      operationId: retur_create
+      tags:
+      - retur
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReturBuatRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReturBuatRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Retur'
+          description: ''
+  /api/retur/{id}/:
+    get:
+      operationId: retur_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this retur.
+        required: true
+      tags:
+      - retur
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Retur'
+          description: ''
+  /api/satuan/:
+    post:
+      operationId: satuan_create
+      tags:
+      - satuan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SatuanBuatRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SatuanBuatRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SatuanBuat'
+          description: ''
+  /api/satuan/{id}/:
+    patch:
+      operationId: satuan_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this satuan produk.
+        required: true
+      tags:
+      - satuan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSatuanUbahRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSatuanUbahRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SatuanUbah'
+          description: ''
+  /api/transaksi/:
+    get:
+      operationId: transaksi_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: ukuran
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - transaksi
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTransaksiList'
+          description: ''
+    post:
+      operationId: transaksi_create
+      tags:
+      - transaksi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransaksiBuatRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TransaksiBuatRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransaksiDetail'
+          description: ''
+  /api/transaksi/{id}/:
+    get:
+      operationId: transaksi_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this transaksi.
+        required: true
+      tags:
+      - transaksi
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransaksiDetail'
+          description: ''
+  /api/transaksi/{id}/ajukan-batal/:
+    post:
+      operationId: transaksi_ajukan_batal_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this transaksi.
+        required: true
+      tags:
+      - transaksi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlasanRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AlasanRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransaksiDetail'
+          description: ''
+  /api/transaksi/{id}/bayar/:
+    post:
+      operationId: transaksi_bayar_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this transaksi.
+        required: true
+      tags:
+      - transaksi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PelunasanRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PelunasanRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransaksiDetail'
+          description: ''
+  /api/transaksi/{id}/nota/:
+    get:
+      operationId: transaksi_nota_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this transaksi.
+        required: true
+      tags:
+      - transaksi
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+          description: ''
+  /api/transaksi/{id}/setujui-batal/:
+    post:
+      operationId: transaksi_setujui_batal_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this transaksi.
+        required: true
+      tags:
+      - transaksi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetujuiBatalRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SetujuiBatalRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransaksiDetail'
+          description: ''
+  /api/transaksi/{id}/tolak-batal/:
+    post:
+      operationId: transaksi_tolak_batal_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this transaksi.
+        required: true
+      tags:
+      - transaksi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlasanRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AlasanRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransaksiDetail'
+          description: ''
+components:
+  schemas:
+    AlasanRequest:
+      type: object
+      properties:
+        alasan:
+          type: string
+          minLength: 1
+          maxLength: 255
+      required:
+      - alasan
+    Alokasi:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nomor_batch:
+          type: string
+          readOnly: true
+        kedaluwarsa:
+          type: string
+          format: date
+          readOnly: true
+        jumlah_botol:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        jumlah_diretur:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+      required:
+      - id
+      - jumlah_botol
+      - kedaluwarsa
+      - nomor_batch
+    AturPasswordRequest:
+      type: object
+      properties:
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - password
+    BarangMasuk:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nomor:
+          type: string
+          maxLength: 30
+        produk:
+          type: integer
+        produk_nama:
+          type: string
+          readOnly: true
+        satuan_nama:
+          type: string
+          readOnly: true
+        jumlah:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        jumlah_botol:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        tanggal:
+          type: string
+          format: date
+        sumber:
+          type: string
+          maxLength: 160
+        catatan:
+          type: string
+        nomor_batch:
+          type: string
+          readOnly: true
+        kedaluwarsa:
+          type: string
+          format: date
+          readOnly: true
+        dibuat_oleh_nama:
+          type: string
+          readOnly: true
+        dibuat_pada:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - dibuat_oleh_nama
+      - dibuat_pada
+      - id
+      - jumlah
+      - jumlah_botol
+      - kedaluwarsa
+      - nomor
+      - nomor_batch
+      - produk
+      - produk_nama
+      - satuan_nama
+      - tanggal
+    BarangMasukBuatRequest:
+      type: object
+      properties:
+        produk:
+          type: integer
+        satuan:
+          type: integer
+        jumlah:
+          type: integer
+          maximum: 10000000
+          minimum: 1
+        nomor_batch:
+          type: string
+          minLength: 1
+          maxLength: 60
+        kedaluwarsa:
+          type: string
+          format: date
+        tanggal:
+          type: string
+          format: date
+        sumber:
+          type: string
+          maxLength: 160
+        catatan:
+          type: string
+      required:
+      - jumlah
+      - kedaluwarsa
+      - nomor_batch
+      - produk
+      - satuan
+    BarisPenjualan:
+      type: object
+      properties:
+        periode:
+          type: string
+          format: date
+        jumlah_transaksi:
+          type: integer
+        bruto:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        retur:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        neto:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+      required:
+      - bruto
+      - jumlah_transaksi
+      - neto
+      - periode
+      - retur
+    BarisPiutang:
+      type: object
+      properties:
+        transaksi:
+          type: integer
+        nomor:
+          type: string
+        pelanggan:
+          type: string
+        tanggal:
+          type: string
+          format: date
+        jatuh_tempo:
+          type: string
+          format: date
+          nullable: true
+        total:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        retur:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        terbayar:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        sisa:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        terlambat_hari:
+          type: integer
+      required:
+      - jatuh_tempo
+      - nomor
+      - pelanggan
+      - retur
+      - sisa
+      - tanggal
+      - terbayar
+      - terlambat_hari
+      - total
+      - transaksi
+    BarisStok:
+      type: object
+      properties:
+        produk:
+          type: integer
+        sku:
+          type: string
+        nama:
+          type: string
+        stok_botol:
+          type: integer
+        stok_teks:
+          type: string
+        stok_minimum:
+          type: integer
+        stok_kedaluwarsa:
+          type: integer
+        kedaluwarsa_terdekat:
+          type: string
+          format: date
+          nullable: true
+        status:
+          type: string
+      required:
+      - kedaluwarsa_terdekat
+      - nama
+      - produk
+      - sku
+      - status
+      - stok_botol
+      - stok_kedaluwarsa
+      - stok_minimum
+      - stok_teks
+    BarisTerlaris:
+      type: object
+      properties:
+        produk:
+          type: integer
+        sku:
+          type: string
+        nama:
+          type: string
+        botol_terjual:
+          type: integer
+        nilai:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+      required:
+      - botol_terjual
+      - nama
+      - nilai
+      - produk
+      - sku
+    Batch:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        produk:
+          type: integer
+        produk_nama:
+          type: string
+          readOnly: true
+        sku:
+          type: string
+          readOnly: true
+        nomor_batch:
+          type: string
+          maxLength: 60
+        kedaluwarsa:
+          type: string
+          format: date
+        jumlah_awal:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        sisa:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        stok_teks:
+          type: string
+          readOnly: true
+        status:
+          type: string
+          readOnly: true
+      required:
+      - id
+      - jumlah_awal
+      - kedaluwarsa
+      - nomor_batch
+      - produk
+      - produk_nama
+      - sisa
+      - sku
+      - status
+      - stok_teks
+    BerkasRequest:
+      type: object
+      properties:
+        berkas:
+          type: string
+          format: binary
+      required:
+      - berkas
+    Dasbor:
+      type: object
+      properties:
+        stok_habis:
+          type: integer
+        stok_menipis:
+          type: array
+          items:
+            $ref: '#/components/schemas/DasborProduk'
+        hampir_kedaluwarsa:
+          type: array
+          items:
+            $ref: '#/components/schemas/DasborBatch'
+        jumlah_transaksi_hari_ini:
+          type: integer
+          nullable: true
+        tagihan_jatuh_tempo:
+          type: integer
+          nullable: true
+        penjualan_hari_ini:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+          nullable: true
+        total_piutang:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+          nullable: true
+        pembatalan_menunggu:
+          type: integer
+          nullable: true
+        opname_menunggu:
+          type: integer
+          nullable: true
+        tren:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tren'
+          nullable: true
+        terlaris:
+          type: array
+          items:
+            $ref: '#/components/schemas/BarisTerlaris'
+          nullable: true
+      required:
+      - hampir_kedaluwarsa
+      - jumlah_transaksi_hari_ini
+      - opname_menunggu
+      - pembatalan_menunggu
+      - penjualan_hari_ini
+      - stok_habis
+      - stok_menipis
+      - tagihan_jatuh_tempo
+      - terlaris
+      - total_piutang
+      - tren
+    DasborBatch:
+      type: object
+      properties:
+        id:
+          type: integer
+        produk_nama:
+          type: string
+        nomor_batch:
+          type: string
+        kedaluwarsa:
+          type: string
+          format: date
+        stok_teks:
+          type: string
+      required:
+      - id
+      - kedaluwarsa
+      - nomor_batch
+      - produk_nama
+      - stok_teks
+    DasborProduk:
+      type: object
+      properties:
+        id:
+          type: integer
+        nama:
+          type: string
+        stok_teks:
+          type: string
+      required:
+      - id
+      - nama
+      - stok_teks
+    FotoRequest:
+      type: object
+      properties:
+        foto:
+          type: string
+          format: binary
+      required:
+      - foto
+    Harga:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        satuan:
+          type: integer
+        satuan_nama:
+          type: string
+          readOnly: true
+        harga:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        berlaku_mulai:
+          type: string
+          format: date
+        dibuat_oleh_nama:
+          type: string
+          readOnly: true
+        dibuat_pada:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - berlaku_mulai
+      - dibuat_oleh_nama
+      - dibuat_pada
+      - harga
+      - id
+      - satuan
+      - satuan_nama
+    HargaRequest:
+      type: object
+      properties:
+        satuan:
+          type: integer
+        harga:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        berlaku_mulai:
+          type: string
+          format: date
+      required:
+      - berlaku_mulai
+      - harga
+      - satuan
+    HasilImpor:
+      type: object
+      properties:
+        dibuat:
+          type: integer
+        dilewati:
+          type: integer
+      required:
+      - dibuat
+      - dilewati
+    Item:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        produk:
+          type: integer
+        nama_produk:
+          type: string
+          maxLength: 160
+        nama_satuan:
+          type: string
+          maxLength: 30
+        isi_botol:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        jumlah:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        harga_satuan:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        subtotal:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        alokasi:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alokasi'
+          readOnly: true
+      required:
+      - alokasi
+      - harga_satuan
+      - id
+      - isi_botol
+      - jumlah
+      - nama_produk
+      - nama_satuan
+      - produk
+      - subtotal
+    ItemBuatRequest:
+      type: object
+      properties:
+        satuan:
+          type: integer
+          minimum: 1
+        jumlah:
+          type: integer
+          maximum: 1000000
+          minimum: 1
+      required:
+      - jumlah
+      - satuan
+    JenisMutasiEnum:
+      enum:
+      - masuk
+      - penjualan
+      - retur
+      - rusak
+      - kedaluwarsa
+      - opname
+      - batal
+      type: string
+      description: |-
+        * `masuk` - Barang masuk
+        * `penjualan` - Penjualan
+        * `retur` - Retur pelanggan
+        * `rusak` - Barang rusak
+        * `kedaluwarsa` - Kedaluwarsa
+        * `opname` - Stok opname
+        * `batal` - Pembatalan transaksi
+    Kategori:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nama:
+          type: string
+          maxLength: 80
+        aktif:
+          type: boolean
+      required:
+      - id
+      - nama
+    KategoriRequest:
+      type: object
+      properties:
+        nama:
+          type: string
+          minLength: 1
+          maxLength: 80
+        aktif:
+          type: boolean
+      required:
+      - nama
+    KondisiEnum:
+      enum:
+      - layak
+      - rusak
+      type: string
+      description: |-
+        * `layak` - Layak jual
+        * `rusak` - Rusak
+    KurangiStokJenisEnum:
+      enum:
+      - rusak
+      - kedaluwarsa
+      type: string
+      description: |-
+        * `rusak` - rusak
+        * `kedaluwarsa` - kedaluwarsa
+    KurangiStokRequest:
+      type: object
+      properties:
+        jenis:
+          $ref: '#/components/schemas/KurangiStokJenisEnum'
+        jumlah:
+          type: integer
+          maximum: 10000000
+          minimum: 1
+        catatan:
+          type: string
+          minLength: 1
+          maxLength: 255
+      required:
+      - catatan
+      - jenis
+      - jumlah
+    LogAktivitas:
+      type: object
+      properties:
+        id:
+          type: integer
+        waktu:
+          type: string
+          format: date-time
+        pengguna:
+          type: string
+          nullable: true
+        aksi:
+          type: string
+        objek:
+          type: string
+        keterangan:
+          type: string
+        perubahan: {}
+      required:
+      - aksi
+      - id
+      - keterangan
+      - objek
+      - perubahan
+      - waktu
+    MetodeBayarEnum:
+      enum:
+      - tunai
+      - transfer
+      - qris
+      type: string
+      description: |-
+        * `tunai` - Tunai
+        * `transfer` - Transfer
+        * `qris` - QRIS
+    Mutasi:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        batch:
+          type: integer
+        nomor_batch:
+          type: string
+          readOnly: true
+        produk_nama:
+          type: string
+          readOnly: true
+        jenis:
+          $ref: '#/components/schemas/JenisMutasiEnum'
+        jenis_label:
+          type: string
+          readOnly: true
+        jumlah:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Positif masuk, negatif keluar, dalam botol
+        sisa_sesudah:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        referensi:
+          type: string
+          maxLength: 40
+        catatan:
+          type: string
+          maxLength: 255
+        dibuat_oleh_nama:
+          type: string
+          readOnly: true
+        dibuat_pada:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - batch
+      - dibuat_oleh_nama
+      - dibuat_pada
+      - id
+      - jenis
+      - jenis_label
+      - jumlah
+      - nomor_batch
+      - produk_nama
+      - sisa_sesudah
+    Opname:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nomor:
+          type: string
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusOpnameEnum'
+          readOnly: true
+        status_label:
+          type: string
+          readOnly: true
+        catatan:
+          type: string
+          readOnly: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpnameItem'
+          readOnly: true
+        dibuat_oleh_nama:
+          type: string
+          readOnly: true
+        dibuat_pada:
+          type: string
+          format: date-time
+          readOnly: true
+        diputuskan_oleh_nama:
+          type: string
+          readOnly: true
+          nullable: true
+        diputuskan_pada:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+      required:
+      - catatan
+      - dibuat_oleh_nama
+      - dibuat_pada
+      - diputuskan_oleh_nama
+      - diputuskan_pada
+      - id
+      - items
+      - nomor
+      - status
+      - status_label
+    OpnameBuatRequest:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpnameItemBuatRequest'
+        catatan:
+          type: string
+      required:
+      - items
+    OpnameItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        batch:
+          type: integer
+        nomor_batch:
+          type: string
+          readOnly: true
+        produk_nama:
+          type: string
+          readOnly: true
+        kedaluwarsa:
+          type: string
+          format: date
+          readOnly: true
+        stok_tercatat:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        stok_fisik:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        selisih:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+      required:
+      - batch
+      - id
+      - kedaluwarsa
+      - nomor_batch
+      - produk_nama
+      - selisih
+      - stok_fisik
+      - stok_tercatat
+    OpnameItemBuatRequest:
+      type: object
+      properties:
+        batch:
+          type: integer
+        stok_fisik:
+          type: integer
+          maximum: 10000000
+          minimum: 0
+      required:
+      - batch
+      - stok_fisik
+    PaginatedBarangMasukList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BarangMasuk'
+    PaginatedBatchList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Batch'
+    PaginatedHargaList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Harga'
+    PaginatedLogAktivitasList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/LogAktivitas'
+    PaginatedMutasiList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Mutasi'
+    PaginatedOpnameList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Opname'
+    PaginatedPelangganList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pelanggan'
+    PaginatedPenggunaList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pengguna'
+    PaginatedProdukList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Produk'
+    PaginatedReturList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Retur'
+    PaginatedTransaksiList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaksi'
+    PatchedKategoriRequest:
+      type: object
+      properties:
+        nama:
+          type: string
+          minLength: 1
+          maxLength: 80
+        aktif:
+          type: boolean
+    PatchedPelangganRequest:
+      type: object
+      properties:
+        nama:
+          type: string
+          minLength: 1
+          maxLength: 160
+        telepon:
+          type: string
+          maxLength: 30
+        alamat:
+          type: string
+        catatan:
+          type: string
+        aktif:
+          type: boolean
+    PatchedPenggunaRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          title: Nama pengguna
+          description: Wajib. 150 karakter atau sedikit. Hanya huruf, angka, dan @/./+/-/_.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        nama:
+          type: string
+          maxLength: 120
+        peran:
+          type: string
+          minLength: 1
+        aktif:
+          type: boolean
+    PatchedProdukUbahRequest:
+      type: object
+      properties:
+        sku:
+          type: string
+          minLength: 1
+          maxLength: 40
+        nama:
+          type: string
+          minLength: 1
+          maxLength: 160
+        kategori:
+          type: integer
+        ukuran_ml:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        kemasan:
+          type: string
+          maxLength: 60
+        stok_minimum:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Dalam satuan botol
+        aktif:
+          type: boolean
+    PatchedSatuanUbahRequest:
+      type: object
+      properties:
+        nama:
+          type: string
+          minLength: 1
+          maxLength: 30
+        aktif:
+          type: boolean
+    Pelanggan:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nama:
+          type: string
+          maxLength: 160
+        telepon:
+          type: string
+          maxLength: 30
+        alamat:
+          type: string
+        catatan:
+          type: string
+        aktif:
+          type: boolean
+        total_piutang:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+          readOnly: true
+          default: '0.00'
+      required:
+      - id
+      - nama
+      - total_piutang
+    PelangganRequest:
+      type: object
+      properties:
+        nama:
+          type: string
+          minLength: 1
+          maxLength: 160
+        telepon:
+          type: string
+          maxLength: 30
+        alamat:
+          type: string
+        catatan:
+          type: string
+        aktif:
+          type: boolean
+      required:
+      - nama
+    PelunasanRequest:
+      type: object
+      properties:
+        jumlah:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        metode:
+          $ref: '#/components/schemas/MetodeBayarEnum'
+        referensi:
+          type: string
+          maxLength: 80
+      required:
+      - jumlah
+      - metode
+    Pembayaran:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        jenis:
+          $ref: '#/components/schemas/PembayaranJenisEnum'
+        jenis_label:
+          type: string
+          readOnly: true
+        metode:
+          $ref: '#/components/schemas/MetodeBayarEnum'
+        metode_label:
+          type: string
+          readOnly: true
+        jumlah:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        referensi:
+          type: string
+          maxLength: 80
+        catatan:
+          type: string
+          maxLength: 255
+        dibuat_oleh_nama:
+          type: string
+          readOnly: true
+        dibuat_pada:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - dibuat_oleh_nama
+      - dibuat_pada
+      - id
+      - jenis_label
+      - jumlah
+      - metode
+      - metode_label
+    PembayaranJenisEnum:
+      enum:
+      - bayar
+      - kembali
+      type: string
+      description: |-
+        * `bayar` - Pembayaran
+        * `kembali` - Pengembalian uang
+    Pengguna:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          title: Nama pengguna
+          description: Wajib. 150 karakter atau sedikit. Hanya huruf, angka, dan @/./+/-/_.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        nama:
+          type: string
+          maxLength: 120
+        peran:
+          type: string
+        peran_nama:
+          type: string
+          readOnly: true
+          nullable: true
+        aktif:
+          type: boolean
+        punya_2fa:
+          type: boolean
+          readOnly: true
+        terakhir_login:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - peran
+      - peran_nama
+      - punya_2fa
+      - terakhir_login
+      - username
+    PenggunaBuat:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          title: Nama pengguna
+          description: Wajib. 150 karakter atau sedikit. Hanya huruf, angka, dan @/./+/-/_.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        nama:
+          type: string
+          maxLength: 120
+        peran:
+          type: string
+        peran_nama:
+          type: string
+          readOnly: true
+          nullable: true
+        aktif:
+          type: boolean
+        punya_2fa:
+          type: boolean
+          readOnly: true
+        terakhir_login:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - peran
+      - peran_nama
+      - punya_2fa
+      - terakhir_login
+      - username
+    PenggunaBuatRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          title: Nama pengguna
+          description: Wajib. 150 karakter atau sedikit. Hanya huruf, angka, dan @/./+/-/_.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        nama:
+          type: string
+          maxLength: 120
+        peran:
+          type: string
+          minLength: 1
+        aktif:
+          type: boolean
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - password
+      - peran
+      - username
+    Peran:
+      type: object
+      properties:
+        kode:
+          type: string
+          maxLength: 30
+        nama:
+          type: string
+          maxLength: 60
+        izin:
+          type: array
+          items:
+            type: string
+          readOnly: true
+      required:
+      - izin
+      - kode
+      - nama
+    Produk:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        sku:
+          type: string
+          maxLength: 40
+        nama:
+          type: string
+          maxLength: 160
+        kategori:
+          type: integer
+        kategori_nama:
+          type: string
+          readOnly: true
+        ukuran_ml:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        kemasan:
+          type: string
+          maxLength: 60
+        stok_minimum:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Dalam satuan botol
+        aktif:
+          type: boolean
+        punya_foto:
+          type: boolean
+          readOnly: true
+        satuan:
+          type: array
+          items:
+            $ref: '#/components/schemas/Satuan'
+          readOnly: true
+        stok_tersedia:
+          type: integer
+          readOnly: true
+        stok_kedaluwarsa:
+          type: integer
+          readOnly: true
+        kedaluwarsa_terdekat:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+        stok_teks:
+          type: string
+          readOnly: true
+        status_stok:
+          type: string
+          readOnly: true
+      required:
+      - id
+      - kategori
+      - kategori_nama
+      - kedaluwarsa_terdekat
+      - nama
+      - punya_foto
+      - satuan
+      - sku
+      - status_stok
+      - stok_kedaluwarsa
+      - stok_teks
+      - stok_tersedia
+    ProdukBuat:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        sku:
+          type: string
+          maxLength: 40
+        nama:
+          type: string
+          maxLength: 160
+        kategori:
+          type: integer
+        ukuran_ml:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        kemasan:
+          type: string
+          maxLength: 60
+        stok_minimum:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Dalam satuan botol
+      required:
+      - id
+      - kategori
+      - nama
+      - sku
+    ProdukBuatRequest:
+      type: object
+      properties:
+        sku:
+          type: string
+          minLength: 1
+          maxLength: 40
+        nama:
+          type: string
+          minLength: 1
+          maxLength: 160
+        kategori:
+          type: integer
+        ukuran_ml:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        kemasan:
+          type: string
+          maxLength: 60
+        stok_minimum:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Dalam satuan botol
+        harga_botol:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+          writeOnly: true
+        isi_dus:
+          type: integer
+          minimum: 2
+          writeOnly: true
+          nullable: true
+        harga_dus:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+          writeOnly: true
+          nullable: true
+      required:
+      - harga_botol
+      - kategori
+      - nama
+      - sku
+    ProdukUbah:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        sku:
+          type: string
+          maxLength: 40
+        nama:
+          type: string
+          maxLength: 160
+        kategori:
+          type: integer
+        ukuran_ml:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        kemasan:
+          type: string
+          maxLength: 60
+        stok_minimum:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Dalam satuan botol
+        aktif:
+          type: boolean
+      required:
+      - id
+      - kategori
+      - nama
+      - sku
+    Retur:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nomor:
+          type: string
+          maxLength: 30
+        transaksi:
+          type: integer
+        transaksi_nomor:
+          type: string
+          readOnly: true
+        pelanggan_nama:
+          type: string
+          readOnly: true
+        tanggal:
+          type: string
+          format: date-time
+          readOnly: true
+        alasan:
+          type: string
+          maxLength: 255
+        total:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        potong_piutang:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        pengembalian_uang:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        dibuat_oleh_nama:
+          type: string
+          readOnly: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReturItem'
+          readOnly: true
+      required:
+      - alasan
+      - dibuat_oleh_nama
+      - id
+      - items
+      - nomor
+      - pelanggan_nama
+      - pengembalian_uang
+      - potong_piutang
+      - tanggal
+      - total
+      - transaksi
+      - transaksi_nomor
+    ReturBuatRequest:
+      type: object
+      properties:
+        transaksi:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReturItemBuatRequest'
+        alasan:
+          type: string
+          minLength: 1
+          maxLength: 255
+        metode_pengembalian:
+          allOf:
+          - $ref: '#/components/schemas/MetodeBayarEnum'
+          default: tunai
+      required:
+      - alasan
+      - items
+      - transaksi
+    ReturItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nama_produk:
+          type: string
+          readOnly: true
+        nomor_batch:
+          type: string
+          readOnly: true
+        jumlah_botol:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        kondisi:
+          $ref: '#/components/schemas/KondisiEnum'
+        nilai:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+      required:
+      - id
+      - jumlah_botol
+      - kondisi
+      - nama_produk
+      - nilai
+      - nomor_batch
+    ReturItemBuatRequest:
+      type: object
+      properties:
+        alokasi:
+          type: integer
+          minimum: 1
+        jumlah_botol:
+          type: integer
+          maximum: 10000000
+          minimum: 1
+        kondisi:
+          $ref: '#/components/schemas/KondisiEnum'
+      required:
+      - alokasi
+      - jumlah_botol
+      - kondisi
+    Satuan:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nama:
+          type: string
+          maxLength: 30
+        isi_botol:
+          type: integer
+          maximum: 2147483647
+          minimum: 1
+        aktif:
+          type: boolean
+        harga:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+          readOnly: true
+          nullable: true
+      required:
+      - harga
+      - id
+      - isi_botol
+      - nama
+    SatuanBuat:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        produk:
+          type: integer
+        nama:
+          type: string
+          maxLength: 30
+        isi_botol:
+          type: integer
+          maximum: 2147483647
+          minimum: 1
+      required:
+      - id
+      - isi_botol
+      - nama
+      - produk
+    SatuanBuatRequest:
+      type: object
+      properties:
+        produk:
+          type: integer
+        nama:
+          type: string
+          minLength: 1
+          maxLength: 30
+        isi_botol:
+          type: integer
+          maximum: 2147483647
+          minimum: 1
+        harga:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+          writeOnly: true
+      required:
+      - harga
+      - isi_botol
+      - nama
+      - produk
+    SatuanUbah:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nama:
+          type: string
+          maxLength: 30
+        aktif:
+          type: boolean
+      required:
+      - id
+      - nama
+    Sesi:
+      type: object
+      properties:
+        terautentikasi:
+          type: boolean
+        pengguna:
+          allOf:
+          - $ref: '#/components/schemas/SesiPengguna'
+          nullable: true
+      required:
+      - pengguna
+      - terautentikasi
+    SesiPengguna:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          title: Nama pengguna
+          description: Wajib. 150 karakter atau sedikit. Hanya huruf, angka, dan @/./+/-/_.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        nama:
+          type: string
+          maxLength: 120
+        peran:
+          type: string
+          nullable: true
+        peran_nama:
+          type: string
+          readOnly: true
+          nullable: true
+        izin:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        wajib_2fa:
+          type: boolean
+          readOnly: true
+        punya_2fa:
+          type: boolean
+          readOnly: true
+      required:
+      - id
+      - izin
+      - peran_nama
+      - punya_2fa
+      - username
+      - wajib_2fa
+    SetujuiBatalRequest:
+      type: object
+      properties:
+        metode_pengembalian:
+          allOf:
+          - $ref: '#/components/schemas/MetodeBayarEnum'
+          default: tunai
+    StatusOpnameEnum:
+      enum:
+      - menunggu
+      - disetujui
+      - ditolak
+      type: string
+      description: |-
+        * `menunggu` - Menunggu persetujuan
+        * `disetujui` - Disetujui
+        * `ditolak` - Ditolak
+    StatusTransaksiEnum:
+      enum:
+      - selesai
+      - menunggu_batal
+      - dibatalkan
+      type: string
+      description: |-
+        * `selesai` - Selesai
+        * `menunggu_batal` - Menunggu pembatalan
+        * `dibatalkan` - Dibatalkan
+    Transaksi:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nomor:
+          type: string
+          maxLength: 30
+        pelanggan:
+          type: integer
+        pelanggan_nama:
+          type: string
+          readOnly: true
+        tanggal:
+          type: string
+          format: date-time
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusTransaksiEnum'
+        status_label:
+          type: string
+          readOnly: true
+        status_bayar:
+          type: string
+          readOnly: true
+        tempo:
+          type: boolean
+        jatuh_tempo:
+          type: string
+          format: date
+          nullable: true
+        total:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        total_retur:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        terbayar:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        sisa_tagihan:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+          readOnly: true
+        dibuat_oleh_nama:
+          type: string
+          readOnly: true
+      required:
+      - dibuat_oleh_nama
+      - id
+      - nomor
+      - pelanggan
+      - pelanggan_nama
+      - sisa_tagihan
+      - status_bayar
+      - status_label
+      - tanggal
+      - total
+    TransaksiBuatRequest:
+      type: object
+      properties:
+        kunci_idempoten:
+          type: string
+          format: uuid
+        pelanggan:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemBuatRequest'
+        metode:
+          $ref: '#/components/schemas/MetodeBayarEnum'
+        tempo:
+          type: boolean
+          default: false
+        uang_muka:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+          default: '0.00'
+        jatuh_tempo:
+          type: string
+          format: date
+          nullable: true
+        referensi:
+          type: string
+          maxLength: 80
+        catatan:
+          type: string
+      required:
+      - items
+      - kunci_idempoten
+      - metode
+      - pelanggan
+    TransaksiDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nomor:
+          type: string
+          maxLength: 30
+        pelanggan:
+          type: integer
+        pelanggan_nama:
+          type: string
+          readOnly: true
+        tanggal:
+          type: string
+          format: date-time
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusTransaksiEnum'
+        status_label:
+          type: string
+          readOnly: true
+        status_bayar:
+          type: string
+          readOnly: true
+        tempo:
+          type: boolean
+        jatuh_tempo:
+          type: string
+          format: date
+          nullable: true
+        total:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        total_retur:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        terbayar:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+        sisa_tagihan:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+          readOnly: true
+        dibuat_oleh_nama:
+          type: string
+          readOnly: true
+        pelanggan_telepon:
+          type: string
+          readOnly: true
+        catatan:
+          type: string
+        alasan_batal:
+          type: string
+          maxLength: 255
+        alasan_tolak_batal:
+          type: string
+          maxLength: 255
+        dibatalkan_pada:
+          type: string
+          format: date-time
+          nullable: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+          readOnly: true
+        pembayaran:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pembayaran'
+          readOnly: true
+        retur:
+          type: array
+          items:
+            $ref: '#/components/schemas/Retur'
+          readOnly: true
+      required:
+      - dibuat_oleh_nama
+      - id
+      - items
+      - nomor
+      - pelanggan
+      - pelanggan_nama
+      - pelanggan_telepon
+      - pembayaran
+      - retur
+      - sisa_tagihan
+      - status_bayar
+      - status_label
+      - tanggal
+      - total
+    Tren:
+      type: object
+      properties:
+        tanggal:
+          type: string
+          format: date
+        neto:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+      required:
+      - neto
+      - tanggal
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
